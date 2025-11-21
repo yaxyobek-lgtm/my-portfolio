@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaxyobek - Shaxsiy Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Asosiy CSS o'zgaruvchilari */
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4A44C6;
+            --dark: #2A2A3C;
+            --light: #F5F5F7;
+            --accent: #FF6B6B;
+            --transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Umumiy stil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Orqa fon uchun pseudo-element */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 100px 5%;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Yaxshilangan Loading animatsiyasi */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-circle {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(108, 99, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            position: relative;
+            box-shadow: 0 0 20px var(--primary), 0 0 40px rgba(108, 99, 255, 0.5);
+        }
+
+        .loader-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: rgba(108, 99, 255, 0.5);
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loader-circle::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: rgba(108, 99, 255, 0.3);
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header va navigatsiya */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(42, 42, 60, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero bo'limi */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 150px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            animation: fadeInLeft 1s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+            position: relative;
+        }
+
+        .hero-content h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(108, 99, 255, 0.2);
+            z-index: -1;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: rgba(245, 245, 247, 0.8);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--dark);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .hero-image {
+            width: 40%;
+            animation: fadeInRight 1s ease-out;
+            position: relative;
+        }
+
+        .floating-card {
+            width: 300px;
+            height: 350px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(20px);
+        }
+
+        .card-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .card-content i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Men haqimda bo'limi */
+        .about {
+            background: rgba(42, 42, 60, 0.5);
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 200px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            background: rgba(108, 99, 255, 0.15);
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition);
+        }
+
+        .about-card:hover::before {
+            left: 100%;
+        }
+
+        .about-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        /* Ijtimoiy tarmoqlar bo'limi */
+        .social {
+            text-align: center;
+        }
+
+        .social-cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .social-card {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+            background: rgba(108, 99, 255, 0.15);
+        }
+
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(108, 99, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .social-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .social-card i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .social-card:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Laptop ma'lumotlari bo'limi */
+        .laptop-specs {
+            background: rgba(42, 42, 60, 0.5);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .spec-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-5px);
+            background: rgba(108, 99, 255, 0.15);
+        }
+
+        .spec-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .spec-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .spec-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .spec-card:hover i {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Aloqa bo'limi */
+        .contact {
+            text-align: center;
+        }
+
+        .contact-container {
+            position: relative;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 30px;
+            transition: var(--transition);
+        }
+
+        .contact-buttons.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .contact-button {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-5px);
+            background: rgba(108, 99, 255, 0.15);
+            border-color: var(--primary);
+        }
+
+        .contact-button.active {
+            transform: scale(1.5);
+            background: rgba(108, 99, 255, 0.25);
+            border-color: var(--primary);
+            z-index: 10;
+        }
+
+        .contact-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(108, 99, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .contact-button:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .contact-button i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .contact-button:hover i {
+            transform: rotate(15deg);
+        }
+
+        .contact-details {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            pointer-events: none;
+            width: 100%;
+        }
+
+        .contact-details.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+
+        .contact-details i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .contact-details h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-details p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(42, 42, 60, 0.8);
+            padding: 30px 5%;
+            text-align: center;
+        }
+
+        /* Qo'shimcha animatsiyalar */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: floatRandom 15s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            width: 30px;
+            height: 30px;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+            width: 15px;
+            height: 15px;
+        }
+
+        .floating-element:nth-child(3) {
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+            width: 25px;
+            height: 25px;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 40%;
+            left: 90%;
+            animation-delay: 6s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .floating-element:nth-child(5) {
+            top: 10%;
+            left: 70%;
+            animation-delay: 8s;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Animatsiyalar */
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes floatRandom {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(0) translateX(20px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(20px) translateX(10px) rotate(270deg);
+            }
+            100% {
+                transform: translateY(0) translateX(0) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                border-color: transparent;
+            }
+            50% {
+                border-color: var(--primary);
+            }
+        }
+
+        /* Scroll effekti */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Media so'rovlar */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 120px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 50px;
+            }
+
+            .hero-image {
+                width: 70%;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(42, 42, 60, 0.95);
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .contact-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .contact-button.active {
+                transform: scale(1.2);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                width: 90%;
+            }
+
+            .floating-card {
+                width: 250px;
+                height: 300px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .contact-button {
+                width: 100px;
+                height: 100px;
+            }
+
+            .contact-button i {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading animatsiyasi -->
+    <div class="loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <!-- Floating elementlar -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">Yaxyo<span>bek</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">Bosh sahifa</a></li>
+            <li><a href="#about">Men haqimda</a></li>
+            <li><a href="#social">Ijtimoiy tarmoqlar</a></li>
+            <li><a href="#laptop">Mening laptopim</a></li>
+            <li><a href="#contact">Aloqa</a></li>
+        </ul>
+        <div class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- Hero bo'limi -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Salom, men <span>Yaxyobek</span>man</h1>
+            <p>Siz usbu sayt orqali men haqimda qisqacha bo'lsada ma'lumot olasiz</p>
+            <a href="#about" class="btn">Men haqimda</a>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card">
+                <div class="card-content">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Kiberxavfsizlik</h3>
+                    <p>Talaba & O'rganuvchi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Men haqimda bo'limi -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Men Haqimda</h2>
+            <div class="about-content">
+                <div class="about-text scroll-reveal">
+                    <h3>Nomonov Yaxyobek</h3>
+                    <p>Men Farg'ona viloyati, Uchko'prik tumanidanman. Hozirda Farg'ona Texnika Davlat Universitetida Kiberxavfsizlik injiniringi yo'nalishi bo'yicha tahsil olaman.</p>
+                    <p>Guruhim: <strong>K23-25KBI</strong>. Kiberxavfsizlik, tarmoq xavfsizligi va hacking sohalariga qiziqaman.</p>
+                    <p>Ta'lim tarixim. Uchko'prik tumani, Mullazoir qishlog'i, 40-umumiy o'rta ta'lim maktabi va</p> 
+                    <p>Farg'onadagi Najot Ta'lim markazida web dasturlash kursida o'qiganman</p>
+                    
+                    <div class="about-cards">
+                        <div class="about-card scroll-reveal">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Talaba</h4>
+                            <p>Farg'ona Davlat Universiteti</p>
+                        </div>
+                        <div class="about-card scroll-reveal">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h4>Manzil</h4>
+                            <p>Farg'ona viloyati</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ijtimoiy tarmoqlar bo'limi -->
+    <section id="social" class="social">
+        <div class="container">
+            <h2>Ijtimoiy Tarmoqlarim</h2>
+            <div class="social-cards">
+                <div class="social-card scroll-reveal" onclick="openLink('https://www.instagram.com/@_rodeus_07')">
+                    <i class="fab fa-instagram"></i>
+                    <h3>Instagram</h3>
+                </div>
+                <div class="social-card scroll-reveal" onclick="openLink('https://t.me/Dasturchi_2007')">
+                    <i class="fab fa-telegram"></i>
+                    <h3>Telegram</h3>
+                </div>
+                <div class="social-card scroll-reveal" onclick="openLink('https://www.youtube.com/@nomonov_yaxyobek')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Laptop ma'lumotlari bo'limi -->
+    <section id="laptop" class="laptop-specs">
+        <div class="container">
+            <h2>Mening Laptopim</h2>
+            <div class="specs-grid">
+                <div class="spec-card scroll-reveal">
+                    <i class="fas fa-laptop"></i>
+                    <h3>Model</h3>
+                    <p>Lenovo V110-15ISK</p>
+                </div>
+                <div class="spec-card scroll-reveal">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Protsessor</h3>
+                    <p>Intel Core i3-6006U @ 2.00GHz</p>
+                </div>
+                <div class="spec-card scroll-reveal">
+                    <i class="fas fa-memory"></i>
+                    <h3>RAM</h3>
+                    <p>4GB</p>
+                </div>
+                <div class="spec-card scroll-reveal">
+                    <i class="fas fa-desktop"></i>
+                    <h3>Operatsion Sistema</h3>
+                    <p>Windows 10 LTSC</p>
+                </div>
+                <div class="spec-card scroll-reveal">
+                    <i class="fas fa-cog"></i>
+                    <h3>BIOS</h3>
+                    <p>Legacy (UEFI emas)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aloqa bo'limi -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Aloqa</h2>
+            <p>Men bilan bog'lanish uchun quyidagi usullardan foydalanishingiz mumkin</p>
+            
+            <div class="contact-container">
+                <div class="contact-buttons" id="contactButtons">
+                    <div class="contact-button scroll-reveal" onclick="showContactDetails('email')">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </div>
+                    <div class="contact-button scroll-reveal" onclick="showContactDetails('phone')">
+                        <i class="fas fa-phone"></i>
+                        <span>Telefon</span>
+                    </div>
+                    <div class="contact-button scroll-reveal" onclick="showContactDetails('location')">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Manzil</span>
+                    </div>
+                </div>
+
+                <div class="contact-details" id="contactDetails">
+                    <i class="fas fa-envelope" id="detailIcon"></i>
+                    <h3 id="detailTitle">Email</h3>
+                    <p id="detailText">yaxyobeknomonov043@gmail.com</p>
+                    <button class="back-button" onclick="hideContactDetails()">Orqaga</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Yaxyobek. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading animatsiyasi
+        window.addEventListener('load', function() {
+            const loader = document.querySelector('.loader');
+            setTimeout(function() {
+                loader.classList.add('hidden');
+            }, 1500);
+        });
+
+        // Header scroll effekti
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Scroll reveal effekti
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        });
+
+        // Mobil menyu
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+
+        // Link ochish
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+
+        // Nav link bosilganda mobil menyuni yopish
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Aloqa tafsilotlarini ko'rsatish
+        function showContactDetails(type) {
+            const buttons = document.getElementById('contactButtons');
+            const details = document.getElementById('contactDetails');
+            const icon = document.getElementById('detailIcon');
+            const title = document.getElementById('detailTitle');
+            const text = document.getElementById('detailText');
+
+            // Barcha tugmalardan active klassini olib tashlash
+            document.querySelectorAll('.contact-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Tanlangan tugmaga active klassini qo'shish
+            event.currentTarget.classList.add('active');
+
+            // Tafsilotlarni sozlash
+            switch(type) {
+                case 'email':
+                    icon.className = 'fas fa-envelope';
+                    title.textContent = 'Email';
+                    text.textContent = 'yaxyobeknomonov043@gmail.com';
+                    break;
+                case 'phone':
+                    icon.className = 'fas fa-phone';
+                    title.textContent = 'Telefon';
+                    text.textContent = '+998 91 739 02 77';
+                    break;
+                case 'location':
+                    icon.className = 'fas fa-map-marker-alt';
+                    title.textContent = 'Manzil';
+                    text.textContent = 'Farg\'ona viloyati, Uchko\'prik tumani';
+                    break;
+            }
+
+            // Ko'rinishlarni o'zgartirish
+            buttons.classList.add('hidden');
+            details.classList.add('active');
+        }
+
+        // Aloqa tafsilotlarini yashirish - TO'LIQ TO'G'RILANDI
+        function hideContactDetails() {
+            const buttons = document.getElementById('contactButtons');
+            const details = document.getElementById('contactDetails');
+
+            // Barcha tugmalardan active klassini olib tashlash
+            document.querySelectorAll('.contact-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Ko'rinishlarni o'zgartirish
+            buttons.classList.remove('hidden');
+            details.classList.remove('active');
+        }
+
+        // Sayt yuklanganda scroll reveal effektini ishga tushirish
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
